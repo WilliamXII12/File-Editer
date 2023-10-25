@@ -91,8 +91,12 @@ class Program
          else { ReadFile(path + file_name + ".txt", 0);}
     }    
 
+    // This Function Is Called Only When a User Wants To 
+    // a File, Not When a File Will Be Created Or Opened
+    // There Is Already Functions For Those Actions
     static void WriteToFile(string path, string file_name)
     { 
+        // This Bit Of Code
         Console.Clear();
         Console.WriteLine("Write What You Want Line For Line");
         Console.WriteLine("");
@@ -127,49 +131,16 @@ class Program
                     contentsToWrite.Add(fileInput);
                 }
             }
-            int lineNumber = 1;
-            Console.Clear();
-            Console.WriteLine("This Is How Your File Will Look Like");
-            Console.WriteLine("");
-            Console.WriteLine("-------------------------------------------------");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            foreach (string content in contentsToWrite)
-            {
-                
-                if (lineNumber < 10)
-                {
-                    Console.Write("Line " + lineNumber++ + "  | ");
-                }
-                else
-                {
-                    Console.Write("Line" + lineNumber++ + "  | ");
-                }
-                Console.WriteLine(content);
-            }
-            lineNumber = 1;
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("-------------------------------------------------");
-            Console.WriteLine("Are You Satisfied With Your Text?");
-            Console.WriteLine("");
-            Console.Write(">>");
-            string happyWithText = Console.ReadLine();
 
-            if (happyWithText == "yes")
+            // This Do While Will Run Until The User 
+            // Is Happy With Their Text
+            bool fileEdit = true;
+            do
             {
-                StreamWriter sw = new StreamWriter(path + file_name + ".txt");
-                foreach (string line in contentsToWrite)
-                {
-                    sw.WriteLine(line);
-                }
-                sw.Close();
-                Main();
-            }
-
-            if (happyWithText == "no")
-            {
+                int lineNumber = 1;
                 Console.Clear();
+                Console.WriteLine("This Is How Your File Will Look Like");
+                Console.WriteLine("");
                 Console.WriteLine("-------------------------------------------------");
                 Console.WriteLine("");
                 Console.WriteLine("");
@@ -187,97 +158,137 @@ class Program
                     Console.WriteLine(content);
                 }
 
-                Console.WriteLine("-------------------------------------------------");
+                lineNumber = 1;
                 Console.WriteLine("");
-                Console.WriteLine("Write The Line Number Of The Text String You Wanna Change");
+                Console.WriteLine("");
+                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine("Are You Satisfied With Your Text?");
                 Console.WriteLine("");
                 Console.Write(">>");
+                string happyWithText = Console.ReadLine();
 
-                string whatLineNumberToChange = Console.ReadLine();
-                bool validAnswer = false; 
-                
-                while (!validAnswer)
+                if (happyWithText == "yes")
                 {
-                    try
+                    StreamWriter sw = new StreamWriter(path + file_name + ".txt");
+                    foreach (string line in contentsToWrite)
                     {
-                        int whatLineNumberToChangeConv = Convert.ToInt32(whatLineNumberToChange);
-                        Console.Clear();
-                        Console.WriteLine("Line " + lineNumber + " | " + contentsToWrite[whatLineNumberToChangeConv]);
-                        Console.WriteLine("");
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("What You Type Below Will Completly Replace The Line You Selected");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("");
-                        Console.Write(">>");
-                        contentsToWrite[whatLineNumberToChangeConv] = Console.ReadLine();
-
-
-                        if (happyWithTextAfterChange?.ToLower() == "yes")
-                        {
-                            
-                        }
-
+                        sw.WriteLine(line);
                     }
-                    catch (FormatException)
-                    {
-                        Console.Clear();
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("Input Must Be An Integer!");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("");
-                        Console.Clear();
-                        Console.WriteLine("-------------------------------------------------");
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        foreach (string content in contentsToWrite)
-                        {
-
-                            if (lineNumber < 10)
-                            {
-                                Console.Write("Line " + lineNumber++ + "  | ");
-                            }
-                            else
-                            {
-                                Console.Write("Line" + lineNumber++ + " | ");
-                            }
-                            Console.WriteLine(content);
-                        }
-
-                        Console.WriteLine("-------------------------------------------------");
-                        Console.WriteLine("");
-                        Console.Write("Now Please Write A ");
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("Number");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write(", And Only A ");
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("Number");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine(" This Time");
-                        Console.WriteLine("");
-                        Console.Write(">>");
-                        whatLineNumberToChange = Console.ReadLine();
-
-
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine("Something else broke");
-                        Console.WriteLine("");
-                        Console.WriteLine(e);
-                        break;
-                    }
+                    sw.Close();
+                    fileEdit = false;
+                    Main();
                 }
 
+                if (happyWithText == "no")
+                {
+                    Console.Clear();
+                    Console.WriteLine("-------------------------------------------------");
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    foreach (string content in contentsToWrite)
+                    {
+
+                        if (lineNumber < 10)
+                        {
+                            Console.Write("Line " + lineNumber++ + "  | ");
+                        }
+                        else
+                        {
+                            Console.Write("Line" + lineNumber++ + " | ");
+                        }
+                        Console.WriteLine(content);
+                    }
+
+                    Console.WriteLine("-------------------------------------------------");
+                    Console.WriteLine("");
+                    Console.WriteLine("Write The Line Number Of The Text String You Wanna Change");
+                    Console.WriteLine("");
+                    Console.Write(">>");
+                    string whatLineNumberToChange = Console.ReadLine();
+
+                    bool validAnswer = false;
+                    // This Loop Will Run Until The User Writes a Valid Input
+                    while (!validAnswer)
+                    {
+                        try
+                        {
+                            int whatLineNumberToChangeConv = Convert.ToInt32(whatLineNumberToChange);
+                            Console.Clear();
+                            Console.WriteLine("Line " + whatLineNumberToChange + " | " + contentsToWrite[whatLineNumberToChangeConv]);
+                            Console.WriteLine("");
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.WriteLine("What You Type Below Will Completly Replace The Line You Selected");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("");
+                            Console.Write(">>");
+                            contentsToWrite[whatLineNumberToChangeConv] = Console.ReadLine();
+
+                        }
+                        catch (FormatException)
+                        {
+                            Console.Clear();
+                            Console.Write("Input Must Be an ");
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write("Integer");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("!");
+                            Console.WriteLine("");
+                            Console.Clear();
+                            Console.WriteLine("-------------------------------------------------");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            foreach (string content in contentsToWrite)
+                            {
+
+                                if (lineNumber < 10)
+                                {
+                                    Console.Write("Line " + lineNumber++ + "  | ");
+                                }
+                                else
+                                {
+                                    Console.Write("Line" + lineNumber++ + " | ");
+                                }
+                                Console.WriteLine(content);
+                            }
+                            lineNumber = 1;
+
+                            Console.WriteLine("-------------------------------------------------");
+                            Console.WriteLine("");
+                            Console.Write("Now Please Write A ");
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write("Number");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.Write(", And Only A ");
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write("Number");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine(" This Time");
+                            Console.WriteLine("");
+                            Console.Write(">>");
+                            whatLineNumberToChange = Console.ReadLine();
 
 
-            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
+                            Console.WriteLine("Something else broke");
+                            Console.WriteLine("");
+                            Console.WriteLine(e);
+                            break;
+                        }
+                    }
+
+
+
+                }
+            // This Do While Runs Until The User Is Done With Their Text
+            } while (fileEdit);
 
 
         }
